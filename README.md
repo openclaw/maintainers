@@ -46,7 +46,6 @@ You are now a target for phishing, social engineering, and supply chain attacks.
 
 ### Day 1-2: Orient and Observe
 
-- [ ] Post in `#introductions`
 - [ ] Follow threads in `#maintainers` (the main discussion channel)
 - [ ] Read pinned messages in `#maintainers`
 - [ ] Read the PR workflow: [`.agents/skills/PR_WORKFLOW.md`](.agents/skills/PR_WORKFLOW.md)
@@ -58,7 +57,7 @@ You are now a target for phishing, social engineering, and supply chain attacks.
 ### Day 3-5: Your First PR
 
 - [ ] Assign yourself to a `size:xs` PR ("if you lick it, it's yours")
-- [ ] Review with AI: `/reviewpr` in Claude Code
+- [ ] Review with AI: `/reviewpr` in Codex
 - [ ] Evaluate: What's the actual problem? Is this the most optimal fix?
 - [ ] Rework if needed — rewriting contributor code is normal and expected
 - [ ] Run gates: `pnpm lint && pnpm build && pnpm test`
