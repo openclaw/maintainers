@@ -1,6 +1,6 @@
 # New Maintainer Guide
 
-A focused survival guide for your first week as an OpenClaw maintainer. This covers the essentials — setup, security, first PRs, processes, and where to find help. For deeper reference, check the full knowledge base or ask in `#maintainers`.
+A survival guide for new OpenClaw maintainers. Covers setup, security, first PRs, processes, and where to find help. For deeper reference, check the full knowledge base or ask in `#maintainers`.
 
 ---
 
@@ -42,9 +42,9 @@ You are now a target for phishing, social engineering, and supply chain attacks.
 
 ---
 
-## First Week
+## Getting Started
 
-### Day 1-2: Orient and Observe
+### Orient and Observe
 
 - [ ] Follow threads in `#maintainers` (the main discussion channel)
 - [ ] Read pinned messages in `#maintainers`
@@ -54,7 +54,7 @@ You are now a target for phishing, social engineering, and supply chain attacks.
 - [ ] Run `/reviewpr` on it to see the AI review output
 - [ ] Read 3-5 recently merged PRs to learn the pattern
 
-### Day 3-5: Your First PR
+### Your First PRs
 
 - [ ] Assign yourself to a `size:xs` PR ("if you lick it, it's yours")
 - [ ] Review with AI: `/reviewpr` in Codex
@@ -66,12 +66,17 @@ You are now a target for phishing, social engineering, and supply chain attacks.
 
 > **Important:** Treat PRs as problem descriptions, not finished code. Fixing up code before merging is standard practice.
 
-### Week 2+: Build Your Rhythm
+### Think in Clusters, Not Individual PRs
 
-- [ ] Review and land 2-3 more `size:xs` PRs
+At OpenClaw's scale, you'll rarely deal with a single isolated issue. When you spot something interesting, use Codex to search for similar or duplicate entries — you'll usually find a whole cluster: multiple PRs attempting the same fix, related issues from different angles, and various approaches people have tried.
+
+The workflow: find the cluster → have Codex review the whole thing → identify the best PR to base a fix from → merge that one → close the duplicates. A single good merge often resolves 5+ related issues and PRs at once. This is far more effective than processing PRs one at a time.
+
+### Build Your Rhythm
+
 - [ ] Run the gateway locally: `pnpm gateway:watch` (requires `pnpm build` first)
 - [ ] Explore key source files: `src/gateway/`, `src/auto-reply/envelope.ts`, `src/config/`, `src/agents/`
-- [ ] Start looking at `size:s` PRs
+- [ ] Graduate to `size:s` PRs
 - [ ] Begin closing obvious junk PRs politely ("Thank you for your kind PR")
 
 ---
@@ -183,9 +188,8 @@ openclaw doctor --fix  # Diagnose and fix issues
 
 ---
 
-## Beyond Week 1
+## Once You're Rolling
 
-- Build a daily rhythm — 1-hour PR review block, graduate to larger PRs
 - Pick a subsystem — review the ownership table in [CONTRIBUTING.md](https://github.com/openclaw/openclaw/blob/main/CONTRIBUTING.md#maintainers), announce your focus in `#maintainers`
 - Watch a release — observe the beta → stable flow in `#maintainers`
 - Make an original contribution — pick a bug from post-release issues, submit a proper PR
