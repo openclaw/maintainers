@@ -1,6 +1,197 @@
-# Maintainer Onboarding
+# New Maintainer Guide
 
-Start here:
+A survival guide for new OpenClaw maintainers. Covers setup, security, first PRs, processes, and where to find help. For deeper reference, check the full knowledge base or ask in `#maintainers`.
 
-- Read [`VISION`](https://github.com/openclaw/openclaw/blob/main/VISION.md) and [`CONTRIBUTING`](https://github.com/openclaw/openclaw/blob/main/CONTRIBUTING.md) in `openclaw/openclaw`.
-- Then read [`PR_WORKFLOW.md`](.agents/skills/PR_WORKFLOW.md) for how to process PRs.
+---
+
+## Setup
+
+```bash
+# Clone and build
+git clone https://github.com/openclaw/openclaw.git
+cd openclaw
+pnpm install
+pnpm build            # Build (instant with tsdown)
+pnpm check            # Combined lint + format + types
+pnpm test             # Full test suite (~87s)
+
+# Install maintainer skills (PR workflow tools)
+npx skills add https://github.com/openclaw/maintainers
+
+# Install OpenClaw itself
+curl -fsSL https://openclaw.ai/install.sh | bash
+openclaw doctor       # Run diagnostics
+```
+
+---
+
+## Security Hardening
+
+You are now a target for phishing, social engineering, and supply chain attacks. Harden your accounts immediately.
+
+- [ ] Enable 2FA on GitHub using an authenticator app
+- [ ] Remove SMS as a 2FA backup (SIM swap risk)
+- [ ] Set up GPG-signed git commits
+- [ ] Get a YubiKey/FIDO2 hardware key (strongly recommended)
+- [ ] Use a password manager (1Password/Bitwarden) for all passwords
+- [ ] Rotate all API keys and tokens
+- [ ] Block random Discord/LinkedIn/Instagram friend requests
+- [ ] Never click unverified cal.com scheduling links
+- [ ] Don't run OpenClaw with a personal identity that has access to sensitive systems
+- [ ] Verify identity through a separate channel before any sensitive action
+
+---
+
+## Getting Started
+
+### Orient and Observe
+
+- [ ] Follow threads in `#maintainers` (the main discussion channel)
+- [ ] Read pinned messages in `#maintainers`
+- [ ] Read the PR workflow: [`.agents/skills/PR_WORKFLOW.md`](.agents/skills/PR_WORKFLOW.md)
+- [ ] Browse small PRs: filter by `is:open is:pr label:size:xs`
+- [ ] Pick one and read it thoroughly — don't take action yet
+- [ ] Run `/reviewpr` on it to see the AI review output
+- [ ] Read 3-5 recently merged PRs to learn the pattern
+
+### Your First PRs
+
+- [ ] Assign yourself to a `size:xs` PR ("if you lick it, it's yours")
+- [ ] Review with AI: `/reviewpr` in Codex
+- [ ] Evaluate: What's the actual problem? Is this the most optimal fix?
+- [ ] Rework if needed — rewriting contributor code is normal and expected
+- [ ] Run gates: `pnpm lint && pnpm build && pnpm test`
+- [ ] Update CHANGELOG.md with the PR number and thank the contributor
+- [ ] Merge using `/landpr` or `/mergepr`
+
+> **Important:** Treat PRs as problem descriptions, not finished code. Fixing up code before merging is standard practice.
+
+### Think in Clusters, Not Individual PRs
+
+At OpenClaw's scale, you'll rarely deal with a single isolated issue. When you spot something interesting, use Codex to search for similar or duplicate entries — you'll usually find a whole cluster: multiple PRs attempting the same fix, related issues from different angles, and various approaches people have tried.
+
+The workflow: find the cluster → have Codex review the whole thing → identify the best PR to base a fix from → merge that one → close the duplicates. A single good merge often resolves 5+ related issues and PRs at once. This is far more effective than processing PRs one at a time.
+
+### Build Your Rhythm
+
+- [ ] Run the gateway locally: `pnpm gateway:watch` (requires `pnpm build` first)
+- [ ] Explore key source files: `src/gateway/`, `src/auto-reply/envelope.ts`, `src/config/`, `src/agents/`
+- [ ] Graduate to `size:s` PRs
+- [ ] Begin closing obvious junk PRs politely ("Thank you for your kind PR")
+
+---
+
+## PR Filters
+
+| Filter | Use |
+|---|---|
+| `is:open is:pr label:size:xs` | Smallest, safest PRs to start with |
+| `is:open is:pr label:trusted-contributor` | Higher-quality submissions |
+| `is:open is:pr label:maintainer` | Other maintainer PRs (review these) |
+
+### The 3-Step Workflow
+
+Review → Prepare → Merge. See [`PR_WORKFLOW.md`](.agents/skills/PR_WORKFLOW.md) for the full process.
+
+1. **Review:** Run `/reviewpr`. Evaluate the problem, implementation, security impact.
+2. **Prepare:** Rebase, fix code, run all gates, push changes.
+3. **Merge:** Squash-merge, update CHANGELOG, close the PR.
+
+### Auto-Close These
+
+- **Skills PRs** — redirect to [ClawHub](https://clawhub.ai) (use `clawdhub` label)
+- **PRs > 5K LOC** — auto-closed per policy
+- **`@ts-nocheck` or lint disabling** — never acceptable
+- **Rename/rebrand spam** — close politely
+
+---
+
+## Volume and Triage
+
+PR and issue volume is high. Triage bots handle first-pass filtering so you can focus on promising PRs. Releases happen roughly daily. The flow: cut beta → maintainers test → fix regressions → ship stable.
+
+---
+
+## Do's and Don'ts
+
+### Do
+
+- Run `pnpm lint && pnpm build && pnpm test` before every merge
+- Always rebase before merging (stale PRs break main)
+- Thank real humans in CHANGELOG entries
+- Announce in `#maintainers` before breaking changes
+- Show, don't tell — demos get quick approvals
+- Ask "does this exist somewhere already?" before building
+
+### Don't
+
+- Push untested code to main
+- Merge your own non-trivial PRs without review
+- Use bun (incompatible with upstream deps)
+- Update Carbon dependency (Shadow controls it)
+- Send AI-generated text to external maintainers' repos
+- Share anything from `#maintainers` externally
+- Use LLMs to write GitHub comments pretending to be human
+- Put date/time in system prompts per-message (breaks token cache, 10x cost)
+- Add `@ts-nocheck` or disable lint rules
+
+---
+
+## Who to Ask
+
+For team contacts, area ownership, and subsystem maintainers, see the [maintainer table in CONTRIBUTING.md](https://github.com/openclaw/openclaw/blob/main/CONTRIBUTING.md#maintainers). For Discord handles and internal communication norms, check the pinned messages in `#maintainers`.
+
+---
+
+## Key Files
+
+| File | Why It Matters |
+|---|---|
+| `CONTRIBUTING.md` | Maintainer list, subsystem ownership, PR process |
+| `VISION.md` | Priorities and what NOT to merge |
+| `AGENTS.md` | AI agent behavior guidelines |
+| `SECURITY.md` | Vulnerability reporting |
+| `CHANGELOG.md` | Updated with every merge |
+| `.agents/skills/PR_WORKFLOW.md` | The 3-step PR pipeline |
+
+---
+
+## Quick Commands
+
+```bash
+pnpm build             # Build
+pnpm check             # Lint + format + types (fast)
+pnpm test              # Full test suite (~87s)
+pnpm tsgo              # Type check only (10x faster)
+pnpm gateway:watch     # Run gateway locally (build first!)
+pnpm format            # Format code
+openclaw update        # Update OpenClaw
+openclaw doctor --fix  # Diagnose and fix issues
+```
+
+---
+
+## Resources
+
+| Resource | URL |
+|---|---|
+| Main repo | https://github.com/openclaw/openclaw |
+| Docs | https://docs.openclaw.ai |
+| ClawHub (skills marketplace) | https://clawhub.ai |
+| Security/trust | https://trust.openclaw.ai |
+| Maintainer skills repo | https://github.com/openclaw/maintainers |
+| Discord | discord.gg/openclaw |
+| Install script | `curl -fsSL https://openclaw.ai/install.sh \| bash` |
+| Beta install | `curl -fsSL https://openclaw.ai/install.sh \| bash -s -- --beta` |
+| Security reports | security@openclaw.ai |
+| Contributing/apply | contributing@openclaw.ai |
+
+---
+
+## Once You're Rolling
+
+- Pick a subsystem — review the ownership table in [CONTRIBUTING.md](https://github.com/openclaw/openclaw/blob/main/CONTRIBUTING.md#maintainers), announce your focus in `#maintainers`
+- Watch a release — observe the beta → stable flow in `#maintainers`
+- Make an original contribution — pick a bug from post-release issues, submit a proper PR
+
+The project runs on trust. Voluntary, fun-first, informal. Ship fast, iterate, and "code > talk."
