@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Cluster"
+  short_description: "Find clusters of related/duplicate PRs"
+  default_prompt: "Use $pr-cluster to find clusters of related PRs given a PR number."
