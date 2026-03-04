@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+script_ts="$script_dir/pr-handoff.ts"
+
+shared_tsx="$script_dir/../../openclaw/node_modules/.bin/tsx"
+if [ -x "$shared_tsx" ]; then
+  exec "$shared_tsx" "$script_ts" "$@"
+fi
+
+exec pnpm dlx tsx "$script_ts" "$@"
