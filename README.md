@@ -16,6 +16,30 @@ This is a queue and tracking layer for maintainers.
 - Script defaults are cwd-agnostic: when paths are not overridden, they resolve relative to this
   `maintainers` repo (so running `../maintainers/scripts/*` from `openclaw` works).
 
+### Quickstart (30 seconds)
+
+```bash
+scripts/pr-plan
+scripts/pr-next
+scripts/pr-handoff --tool codex
+```
+
+- Copy `pr-handoff` output into Codex/Claude and complete review/merge/close in `openclaw`.
+- Record the final outcome in pr-ops:
+  `scripts/pr-decide --decision <merge|close_duplicate|close_not_planned|defer> --pr <number>`
+- Check progress with `scripts/pr-stats`.
+
+### Responsibilities
+
+- Reviewer agent (`openclaw` repo):
+  - run `review-pr` -> `prepare-pr` -> `merge-pr`
+  - perform GitHub write actions (merge/close)
+- pr-ops (`maintainers` repo):
+  - plan queue
+  - generate handoff prompt
+  - track decisions and progress state
+  - no direct GitHub write actions
+
 ### Daily Workflow (Simple)
 
 1. Build or refresh the queue:
@@ -149,6 +173,19 @@ Pending members: 32831, 32848
 Policy flags: none
 Queue rationale: exact title cluster (2 PRs) | file overlap confidence: high | origin PR: #32831
 ```
+
+### Troubleshooting
+
+- `Plan file not found .../.local/pr-plan/daily-plan.json`
+  - Run `scripts/pr-plan` first.
+  - If you run commands from `openclaw`, defaults still resolve to `../maintainers` paths.
+- `No unclaimed queue items available for this owner`
+  - Set owner explicitly (`export PR_OPS_OWNER=<id>`) or wait for claim TTL expiry.
+  - Use `scripts/pr-stats` to inspect active claims.
+- `.local/prep.env` missing during merge flow
+  - `merge-pr` includes a built-in manual prep-head push recovery step to regenerate it.
+- Need operator hints in handoff output
+  - Use `scripts/pr-handoff --tool codex --verbose` (default output is prompt-only).
 
 Artifacts:
 
