@@ -78,10 +78,12 @@ Changelog gate requirement:
 
 - `CHANGELOG.md` must include a newly added changelog entry line.
 - When PR author metadata is available, that same changelog entry line must include `(#<PR>) thanks @<pr-author>`.
+- **Append new entries to the end of the relevant section** (`### Changes` or `### Fixes`). Do not insert at the top or middle of the section — append-only ordering prevents merge conflicts when multiple PRs touch the same version block.
 
 4. Commit scoped changes
 
 Use concise, action-oriented subject lines without PR numbers/thanks. The final merge/squash commit is the only place we include PR numbers and contributor thanks.
+If you create a dedicated changelog commit, the subject must describe the actual user-facing change content; avoid generic subjects like "add PR entry" or "update changelog".
 
 Use explicit file list:
 
