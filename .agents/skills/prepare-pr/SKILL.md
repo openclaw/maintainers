@@ -78,6 +78,7 @@ Changelog gate requirement:
 
 - `CHANGELOG.md` must include a newly added changelog entry line.
 - When PR author metadata is available, that same changelog entry line must include `(#<PR>) thanks @<pr-author>`.
+- **Append new entries to the end of the relevant section** (`### Changes` or `### Fixes`). Do not insert at the top or middle of the section — append-only ordering prevents merge conflicts when multiple PRs touch the same version block.
 
 4. Commit scoped changes
 
